@@ -107,7 +107,8 @@ var ArticleScrollManager = Class( {
 			var articleHeight = articles[ i ].getHeight(),
 			    articleScrollHeight = articles[ i ].getScrollHeight(),
 			    innerScrollArea = articleScrollHeight - articleHeight,
-			    innerScrollTop;
+			    innerScrollTop,
+			    marginTop;
 			
 			// Set the inner Article scroll top value
 			if( scrollTop - totalPreviousArticlesScrollHeight < 0 ) {
@@ -123,10 +124,9 @@ var ArticleScrollManager = Class( {
 			
 			
 			// Set the outer Article margin-top value
-			
-			var newMarginTop = innerScrollTop - scrollTop + totalPreviousArticlesHeight;
-			articles[ i ].setMarginTop( newMarginTop );
-			DebugOutputWindow.setArticleMarginTopVal( i, newMarginTop );
+			marginTop = innerScrollTop - scrollTop + totalPreviousArticlesHeight;
+			articles[ i ].setMarginTop( marginTop );
+			DebugOutputWindow.setArticleMarginTopVal( i, marginTop );
 			
 			totalPreviousArticlesHeight += articles[ i ].getHeight();
 			totalPreviousArticlesScrollHeight += articles[ i ].getScrollHeight();
