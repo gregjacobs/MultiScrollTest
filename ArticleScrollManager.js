@@ -1,27 +1,22 @@
 /*global window, jQuery, DebugOutputWindow */
-var ArticleScrollManager = function( wrapperEl, articles ) {
-	this.$wrapperEl = jQuery( wrapperEl );
+/*jslint plusplus:true, undef:false, vars:true */
+var ArticleScrollManager = function( $scrollerEl, $scrollerHeightEl, articles ) {
+	this.$scrollerEl = $scrollerEl;
+	this.$scrollerHeightEl = $scrollerHeightEl;
 	this.articles = articles;
 	
-	this.$window = jQuery( window );
-	
-	
-	this.$wrapperEl.css( 'height', jQuery( window ).height() );
-	
-	var wrapperScrollHeight = 0;
-	for( var i = 0, len = articles.length; i < len; i++ ) {
+	var scrollerHeight = 0,
+	    i, len;
+	    
+	for( i = 0, len = articles.length; i < len; i++ ) {
 		//console.log( 'Article ' + i + '  height: ', articles[ i ].getHeight(), '  scroll height: ', articles[ i ].getScrollHeight() );
-		wrapperScrollHeight += Math.max( articles[ i ].getHeight(), articles[ i ].getScrollHeight() ); 
+		scrollerHeight += Math.max( articles[ i ].getHeight(), articles[ i ].getScrollHeight() ); 
 	}
 	
-	//console.log( 'setting wrapper scroll height to: ', wrapperScrollHeight );
-	this.$wrapperEl.css( 'height', wrapperScrollHeight + 'px' );
+	//console.log( 'setting scroller height element to: ', scrollerHeight );
+	this.$scrollerHeightEl.css( 'height', scrollerHeight + 'px' );
 	
-	
-	//this.$wrapperEl.on( 'scroll', jQuery.proxy( this.onWrapperScroll, this ) );  -- this one is not working... the window scroll is being used instead. need to figure out
-	jQuery( window ).on( 'scroll', jQuery.proxy( this.onWrapperScroll, this ) );
-	
-	//this.setScrollTop( this.$window.scrollTop() );  -- done from outside the class now
+	this.$scrollerEl.on( 'scroll', jQuery.proxy( this.onScroll, this ) );
 };
 
 
@@ -29,8 +24,8 @@ ArticleScrollManager.prototype = {
 	constructor : ArticleScrollManager,
 	
 	
-	onWrapperScroll : function( evt ) {
-		this.setScrollTop( this.$window.scrollTop() );
+	onScroll : function( evt ) {
+		this.setScrollTop( this.$scrollerEl.scrollTop() );
 	},
 	
 	

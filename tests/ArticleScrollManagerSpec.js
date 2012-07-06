@@ -1,5 +1,5 @@
 /*global describe, beforeEach, it, expect, JsMockito, spyOn, Article, ArticleScrollManager */
-/*jslint forin: true */
+/*jslint forin: true, vars: true */
 describe( 'ArticleScrollManager', function() {
 	var articleScrollManager,
 	    articles;
@@ -32,7 +32,7 @@ describe( 'ArticleScrollManager', function() {
 			JsMockito.when( articles[ i ] ).getScrollTop().then( getScrollTop );
 		}
 		
-		articleScrollManager = new ArticleScrollManager( document.createElement( 'div' ), articles );
+		articleScrollManager = new ArticleScrollManager( jQuery( '<div />' ), jQuery( '<div />' ), articles );
 	} );
 	
 	

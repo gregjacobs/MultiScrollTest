@@ -3,17 +3,19 @@ var DebugOutputWindow = {
 	
 	init : function() {
 		this.$debugOutputEl = jQuery( '#debugOutput' );
-		this.$windowScrollValEl = this.$debugOutputEl.find( '.windowScrollVal' );
+		this.$containerScrollValEl = this.$debugOutputEl.find( '.containerScrollVal' );
 		this.$articleMarginTopValEls = this.$debugOutputEl.find( '.articleMarginTopVal' );
 		this.$articleScrollValEls = this.$debugOutputEl.find( '.articleScrollVal' );
 		
-		jQuery( window ).on( 'scroll', jQuery.proxy( this.onWindowScroll, this ) );
-		this.onWindowScroll();
+		this.$containerScrollerEl = jQuery( '#scroller' );
+		
+		this.$containerScrollerEl.on( 'scroll', jQuery.proxy( this.onContainerScroll, this ) );
+		this.onContainerScroll();
 	},
 	
 	
-	onWindowScroll : function() {
-		this.$windowScrollValEl.html( jQuery( window ).scrollTop() );
+	onContainerScroll : function() {
+		this.$containerScrollValEl.html( this.$containerScrollerEl.scrollTop() );
 	},
 	
 	setArticleMarginTopVal : function( articleNum, val ) {
