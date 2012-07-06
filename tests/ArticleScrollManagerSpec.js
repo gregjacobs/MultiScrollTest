@@ -32,7 +32,7 @@ describe( 'ArticleScrollManager', function() {
 			JsMockito.when( articles[ i ] ).getScrollTop().then( getScrollTop );
 		}
 		
-		articleScrollManager = new ArticleScrollManager( jQuery( '<div />' ), jQuery( '<div />' ), articles );
+		articleScrollManager = new ArticleScrollManager( jQuery( '<div />' ), jQuery( '<div />' ), jQuery( '<div />' ), articles );
 	} );
 	
 	

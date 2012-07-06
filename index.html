@@ -4,6 +4,7 @@
 	<head>
 		<title>Multiscroll Test</title>
 		<script src="http://code.jquery.com/jquery-1.7.2.js"></script>
+		<script src="vendor/jquery.mousewheel/jquery.mousewheel.js"></script>
 		<script src="DebugOutputWindow.js"></script>
 		<script src="Article.js"></script>
 		<script src="ArticleScrollManager.js"></script>
@@ -29,6 +30,16 @@
 				height: 100%;
 				overflow-x: hidden;
 				overflow-y: scroll;
+				z-index: 9000;
+				
+				pointer-events: none;
+				
+				/* for IE */
+				/*
+				 background-color: white;  
+				    -- This will be set to 'white' in the JS code when we want pointer events on it (i.e. for mousewheel), 
+				       and cleared when we don't */
+				opacity: 0;  /* so we don't see the background color in IE */
 			}
 			
 			#scrollerHeightEl {
@@ -43,6 +54,7 @@
 				position: absolute;
 				top: 0;
 				left: 0;
+				z-index: 0;
 				
 				overflow: hidden;
 				background-size: contain;
@@ -81,7 +93,7 @@
 		<div id="container">
 			
 			<div class="article article1"><div class="article-inner">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam feugiat, nulla eu tempor pharetra, urna sem vulputate diam, vitae gravida mi lectus sed quam. Nam non risus arcu, non varius ante. Nunc pellentesque eros ipsum, eu mollis orci. Quisque eget neque dui. Phasellus id odio eu elit sodales aliquam vitae non mauris. Vestibulum condimentum libero nec ante ultrices sollicitudin. Suspendisse fringilla interdum magna sit amet mollis. Pellentesque mattis ullamcorper felis. Curabitur a leo nec dolor volutpat viverra.
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. <a href="http://me.com" target="_blank">DOLOR</a> Nam feugiat, nulla eu tempor pharetra, urna sem vulputate diam, vitae gravida mi lectus sed quam. Nam non risus arcu, non varius ante. Nunc pellentesque eros ipsum, eu mollis orci. Quisque eget neque dui. Phasellus id odio eu elit sodales aliquam vitae non mauris. Vestibulum condimentum libero nec ante ultrices sollicitudin. Suspendisse fringilla interdum magna sit amet mollis. Pellentesque mattis ullamcorper felis. Curabitur a leo nec dolor volutpat viverra.
 
 				Etiam dapibus interdum rhoncus. Maecenas nisi libero, pulvinar ut vulputate sed, feugiat et neque. Duis vel tortor lacus. Nam nec sapien mauris, sit amet pharetra mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam hendrerit suscipit odio ac accumsan. Cras sollicitudin sapien eu mauris ultrices pellentesque.
 				

@@ -21,6 +21,6 @@ jQuery( document ).ready( function() {
 		articles.push( new Article( el ) );
 	} );
 	
-	scrollManager = new ArticleScrollManager( $scrollerEl, $scrollerHeightEl, articles );
+	scrollManager = new ArticleScrollManager( $containerEl, $scrollerEl, $scrollerHeightEl, articles );
 	scrollManager.setScrollTop( $scrollerEl.scrollTop() );
 } );

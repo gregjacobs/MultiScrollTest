@@ -1,6 +1,7 @@
 /*global window, jQuery, DebugOutputWindow */
 /*jslint plusplus:true, undef:false, vars:true */
-var ArticleScrollManager = function( $scrollerEl, $scrollerHeightEl, articles ) {
+var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightEl, articles ) {
+	this.$containerEl = $containerEl;
 	this.$scrollerEl = $scrollerEl;
 	this.$scrollerHeightEl = $scrollerHeightEl;
 	this.articles = articles;
@@ -17,6 +18,14 @@ var ArticleScrollManager = function( $scrollerEl, $scrollerHeightEl, articles ) 
 	this.$scrollerHeightEl.css( 'height', scrollerHeight + 'px' );
 	
 	this.$scrollerEl.on( 'scroll', jQuery.proxy( this.onScroll, this ) );
+	
+	// Pass-through any mouse events on the scroller element overlay to the element under it. They will
+	// bubble up to the $containerEl, but really be fired on the $scrollerEl. However, when we hide the
+	// $scrollerEl, the $containerEl will still tell us when its mouseleave event happens
+	this.$containerEl.on( 'click dblclick mousedown mouseup mouseover mouseout contextmenu mouseenter mouseleave', 
+		jQuery.proxy( this.onScrollerMouseEvent, this ) );
+	
+	this.$containerEl.on( 'mousewheel', jQuery.proxy( this.onMouseWheel, this ) );
 };
 
 
@@ -68,6 +77,25 @@ ArticleScrollManager.prototype = {
 			previousArticleHeight = articleHeight;
 			lastMarginTop = marginTop;
 		}
+	},
+	
+	
+	onMouseWheel : function( evt ) {
+		if( this.pointerEventsResetTimer ) {
+			clearTimeout( this.pointerEventsResetTimer );
+		}
+		
+		// On mouse wheel, give pointer events back to the scroller element
+		// so that it can scroll
+		this.$scrollerEl.css( 'pointer-events', 'auto' );
+		this.$scrollerEl.css( 'background-color', 'white' );  // for IE
+		
+		// Set a timeout to then remove pointer events after a short time, so that the
+		// user can click through again.
+		this.pointerEventsResetTimer = setTimeout( jQuery.proxy( function() {
+			this.$scrollerEl.css( 'pointer-events', 'none' );
+			this.$scrollerEl.css( 'background-color', '' );  // for IE
+		}, this ), 150 );
 	}
 	
 };
