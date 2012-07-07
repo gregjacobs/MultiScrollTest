@@ -11,7 +11,7 @@ jQuery( document ).ready( function() {
 	    articles = [],
 	    scrollManager;
 	    
-	jQuery( '.article' ).each( function( idx, el ) {
+	jQuery( '*[data-elem="article"]' ).each( function( idx, el ) {
 		// Size each article to the size of the container element
 		jQuery( el ).css( {
 			width : containerElWidth + 'px',

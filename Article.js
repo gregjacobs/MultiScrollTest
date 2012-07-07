@@ -1,6 +1,7 @@
 /*global window, jQuery */
 var Article = function( el ) {
 	this.$el = jQuery( el );
+	this.$innerEl = this.$el.find( '*[data-elem="article-inner"]' );
 };
 
 Article.prototype = {
