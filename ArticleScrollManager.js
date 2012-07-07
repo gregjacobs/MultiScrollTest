@@ -50,7 +50,7 @@ ArticleScrollManager.prototype = {
 			    articleScrollHeight = articles[ i ].getScrollHeight(),
 			    excessInnerScrollHeight = Math.max( articleScrollHeight - articleHeight, 0 ),   // Don't let this go negative
 			    innerScrollTop,
-			    marginTop;
+			    top;
 			
 			// Set the inner Article scroll top value
 			if( scrollTop - totalPreviousArticlesScrollHeight < 0 ) {
@@ -63,19 +63,19 @@ ArticleScrollManager.prototype = {
 			articles[ i ].setScrollTop( innerScrollTop );
 			
 			
-			// Set the outer Article margin-top value
-			marginTop = previousArticleHeight + lastMarginTop + innerScrollTop;
-			articles[ i ].setMarginTop( marginTop );
+			// Set the outer Article top value
+			top = previousArticleHeight + lastMarginTop + innerScrollTop;
+			articles[ i ].setTop( top );
 			
 			
 			// Debugging Output
 			DebugOutputWindow.setArticleScrollVal( i, innerScrollTop );
-			DebugOutputWindow.setArticleMarginTopVal( i, marginTop );
+			DebugOutputWindow.setArticleMarginTopVal( i, top );
 			
 			totalPreviousArticlesScrollHeight += Math.max( articleHeight, articleScrollHeight );
 			
 			previousArticleHeight = articleHeight;
-			lastMarginTop = marginTop;
+			lastMarginTop = top;
 		}
 	},
 	

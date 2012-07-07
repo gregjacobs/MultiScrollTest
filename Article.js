@@ -15,12 +15,12 @@ Article.prototype = {
 	},
 	
 	
-	setMarginTop : function( topVal ) {
-		this.$el.css( 'margin-top', topVal );
+	setTop : function( topVal ) {
+		this.$el.css( 'top', topVal );
 	},
 	
-	getMarginTop : function( topVal ) {
-		return this.$el.css( 'margin-top' );
+	getTop : function( topVal ) {
+		return this.$el.css( 'top' );
 	},
 	
 	

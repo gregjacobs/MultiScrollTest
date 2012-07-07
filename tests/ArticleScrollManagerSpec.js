@@ -8,11 +8,11 @@ describe( 'ArticleScrollManager', function() {
 	beforeEach( function() {
 		articles = [];
 		
-		var setMarginTop = function( val ) {
-			this.marginTop = val;
+		var setTop = function( val ) {
+			this.top = val;
 		};
-		var getMarginTop = function() {
-			return this.marginTop;
+		var getTop = function() {
+			return this.top;
 		};
 		var setScrollTop = function( val ) {
 			this.scrollTop = val;
@@ -26,8 +26,8 @@ describe( 'ArticleScrollManager', function() {
 			
 			JsMockito.when( articles[ i ] ).getHeight().thenReturn( 100 );
 			JsMockito.when( articles[ i ] ).getScrollHeight().thenReturn( 150 );
-			JsMockito.when( articles[ i ] ).setMarginTop().then( setMarginTop );
-			JsMockito.when( articles[ i ] ).getMarginTop().then( getMarginTop );
+			JsMockito.when( articles[ i ] ).setTop().then( setTop );
+			JsMockito.when( articles[ i ] ).getTop().then( getTop );
 			JsMockito.when( articles[ i ] ).setScrollTop().then( setScrollTop );
 			JsMockito.when( articles[ i ] ).getScrollTop().then( getScrollTop );
 		}
@@ -50,93 +50,93 @@ describe( 'ArticleScrollManager', function() {
 		// The keys of this hashmap are the scroll values. Then inside those, the map's keys are the article index
 		var expected = {
 			0 : {
-				0 : { marginTop: 0, innerScroll: 0 },
-				1 : { marginTop: 100, innerScroll: 0 },
-				2 : { marginTop: 200, innerScroll: 0 }
+				0 : { top: 0, innerScroll: 0 },
+				1 : { top: 100, innerScroll: 0 },
+				2 : { top: 200, innerScroll: 0 }
 			},
 			
 			25 : {
-				0 : { marginTop: 0, innerScroll: 25 },
-				1 : { marginTop: 100, innerScroll: 0 },
-				2 : { marginTop: 200, innerScroll: 0 }
+				0 : { top: 0, innerScroll: 25 },
+				1 : { top: 100, innerScroll: 0 },
+				2 : { top: 200, innerScroll: 0 }
 			},
 			
 			50 : {
-				0 : { marginTop: 0, innerScroll: 50 },
-				1 : { marginTop: 100, innerScroll: 0 },
-				2 : { marginTop: 200, innerScroll: 0 }
+				0 : { top: 0, innerScroll: 50 },
+				1 : { top: 100, innerScroll: 0 },
+				2 : { top: 200, innerScroll: 0 }
 			},
 			
 			75 : {
-				0 : { marginTop: -25, innerScroll: 50 },
-				1 : { marginTop: 75, innerScroll: 0 },
-				2 : { marginTop: 175, innerScroll: 0 }
+				0 : { top: -25, innerScroll: 50 },
+				1 : { top: 75, innerScroll: 0 },
+				2 : { top: 175, innerScroll: 0 }
 			},
 			
 			100 : {
-				0 : { marginTop: -50, innerScroll: 50 },
-				1 : { marginTop: 50, innerScroll: 0 },
-				2 : { marginTop: 150, innerScroll: 0 }
+				0 : { top: -50, innerScroll: 50 },
+				1 : { top: 50, innerScroll: 0 },
+				2 : { top: 150, innerScroll: 0 }
 			},
 			
 			125 : {
-				0 : { marginTop: -75, innerScroll: 50 },
-				1 : { marginTop: 25, innerScroll: 0 },
-				2 : { marginTop: 125, innerScroll: 0 }
+				0 : { top: -75, innerScroll: 50 },
+				1 : { top: 25, innerScroll: 0 },
+				2 : { top: 125, innerScroll: 0 }
 			},
 			
 			150 : {
-				0 : { marginTop: -100, innerScroll: 50 },
-				1 : { marginTop: 0, innerScroll: 0 },
-				2 : { marginTop: 100, innerScroll: 0 }
+				0 : { top: -100, innerScroll: 50 },
+				1 : { top: 0, innerScroll: 0 },
+				2 : { top: 100, innerScroll: 0 }
 			},
 			
 			175 : {
-				0 : { marginTop: -125, innerScroll: 50 },
-				1 : { marginTop: 0, innerScroll: 25 },
-				2 : { marginTop: 100, innerScroll: 0 }
+				0 : { top: -125, innerScroll: 50 },
+				1 : { top: 0, innerScroll: 25 },
+				2 : { top: 100, innerScroll: 0 }
 			},
 			
 			200 : {
-				0 : { marginTop: -150, innerScroll: 50 },
-				1 : { marginTop: 0, innerScroll: 50 },
-				2 : { marginTop: 100, innerScroll: 0 }
+				0 : { top: -150, innerScroll: 50 },
+				1 : { top: 0, innerScroll: 50 },
+				2 : { top: 100, innerScroll: 0 }
 			},
 			
 			225 : {
-				0 : { marginTop: -175, innerScroll: 50 },
-				1 : { marginTop: -25, innerScroll: 50 },
-				2 : { marginTop: 75, innerScroll: 0 }
+				0 : { top: -175, innerScroll: 50 },
+				1 : { top: -25, innerScroll: 50 },
+				2 : { top: 75, innerScroll: 0 }
 			},
 			
 			250 : {
-				0 : { marginTop: -200, innerScroll: 50 },
-				1 : { marginTop: -50, innerScroll: 50 },
-				2 : { marginTop: 50, innerScroll: 0 }
+				0 : { top: -200, innerScroll: 50 },
+				1 : { top: -50, innerScroll: 50 },
+				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			275 : {
-				0 : { marginTop: -225, innerScroll: 50 },
-				1 : { marginTop: -75, innerScroll: 50 },
-				2 : { marginTop: 25, innerScroll: 0 }
+				0 : { top: -225, innerScroll: 50 },
+				1 : { top: -75, innerScroll: 50 },
+				2 : { top: 25, innerScroll: 0 }
 			},
 			
 			300 : {
-				0 : { marginTop: -250, innerScroll: 50 },
-				1 : { marginTop: -100, innerScroll: 50 },
-				2 : { marginTop: 0, innerScroll: 0 }
+				0 : { top: -250, innerScroll: 50 },
+				1 : { top: -100, innerScroll: 50 },
+				2 : { top: 0, innerScroll: 0 }
 			},
 			
 			325 : {
-				0 : { marginTop: -275, innerScroll: 50 },
-				1 : { marginTop: -125, innerScroll: 50 },
-				2 : { marginTop: 0, innerScroll: 25 }
+				0 : { top: -275, innerScroll: 50 },
+				1 : { top: -125, innerScroll: 50 },
+				2 : { top: 0, innerScroll: 25 }
 			},
 			
 			350 : {
-				0 : { marginTop: -300, innerScroll: 50 },
-				1 : { marginTop: -150, innerScroll: 50 },
-				2 : { marginTop: 0, innerScroll: 50 }
+				0 : { top: -300, innerScroll: 50 },
+				1 : { top: -150, innerScroll: 50 },
+				2 : { top: 0, innerScroll: 50 }
 			}
 		};
 		
@@ -149,17 +149,17 @@ describe( 'ArticleScrollManager', function() {
 				} );
 				
 				it( "should set the first article to the correct inner scroll and top margin", function() {
-					expect( articles[ 0 ].getMarginTop() ).toBe( expected[ scrollValue ][ 0 ].marginTop );
+					expect( articles[ 0 ].getTop() ).toBe( expected[ scrollValue ][ 0 ].top );
 					expect( articles[ 0 ].getScrollTop() ).toBe( expected[ scrollValue ][ 0 ].innerScroll );
 				} );
 				
 				it( "should set the second article to the correct inner scroll and top margin", function() {
-					expect( articles[ 1 ].getMarginTop() ).toBe( expected[ scrollValue ][ 1 ].marginTop );
+					expect( articles[ 1 ].getTop() ).toBe( expected[ scrollValue ][ 1 ].top );
 					expect( articles[ 1 ].getScrollTop() ).toBe( expected[ scrollValue ][ 1 ].innerScroll );
 				} );
 				
 				it( "should set the third article to the correct inner scroll and top margin", function() {
-					expect( articles[ 2 ].getMarginTop() ).toBe( expected[ scrollValue ][ 2 ].marginTop );
+					expect( articles[ 2 ].getTop() ).toBe( expected[ scrollValue ][ 2 ].top );
 					expect( articles[ 2 ].getScrollTop() ).toBe( expected[ scrollValue ][ 2 ].innerScroll );
 				} );
 			} );
@@ -189,69 +189,69 @@ describe( 'ArticleScrollManager', function() {
 		// The keys of this hashmap are the scroll values. Then inside those, the map's keys are the article index
 		var expected = {
 			0 : {
-				0 : { marginTop: 0, innerScroll: 0 },
-				1 : { marginTop: 100, innerScroll: 0 },
-				2 : { marginTop: 150, innerScroll: 0 }
+				0 : { top: 0, innerScroll: 0 },
+				1 : { top: 100, innerScroll: 0 },
+				2 : { top: 150, innerScroll: 0 }
 			},
 			
 			25 : {
-				0 : { marginTop: -25, innerScroll: 0 },
-				1 : { marginTop: 75, innerScroll: 0 },
-				2 : { marginTop: 125, innerScroll: 0 }
+				0 : { top: -25, innerScroll: 0 },
+				1 : { top: 75, innerScroll: 0 },
+				2 : { top: 125, innerScroll: 0 }
 			},
 			
 			50 : {
-				0 : { marginTop: -50, innerScroll: 0 },
-				1 : { marginTop: 50, innerScroll: 0 },
-				2 : { marginTop: 100, innerScroll: 0 }
+				0 : { top: -50, innerScroll: 0 },
+				1 : { top: 50, innerScroll: 0 },
+				2 : { top: 100, innerScroll: 0 }
 			},
 			
 			75 : {
-				0 : { marginTop: -75, innerScroll: 0 },
-				1 : { marginTop: 25, innerScroll: 0 },
-				2 : { marginTop: 75, innerScroll: 0 }
+				0 : { top: -75, innerScroll: 0 },
+				1 : { top: 25, innerScroll: 0 },
+				2 : { top: 75, innerScroll: 0 }
 			},
 			
 			100 : {
-				0 : { marginTop: -100, innerScroll: 0 },
-				1 : { marginTop: 0, innerScroll: 0 },
-				2 : { marginTop: 50, innerScroll: 0 }
+				0 : { top: -100, innerScroll: 0 },
+				1 : { top: 0, innerScroll: 0 },
+				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			125 : {
-				0 : { marginTop: -125, innerScroll: 0 },
-				1 : { marginTop: 0, innerScroll: 25 },
-				2 : { marginTop: 50, innerScroll: 0 }
+				0 : { top: -125, innerScroll: 0 },
+				1 : { top: 0, innerScroll: 25 },
+				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			150 : {
-				0 : { marginTop: -150, innerScroll: 0 },
-				1 : { marginTop: 0, innerScroll: 50 },
-				2 : { marginTop: 50, innerScroll: 0 }
+				0 : { top: -150, innerScroll: 0 },
+				1 : { top: 0, innerScroll: 50 },
+				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			175 : {
-				0 : { marginTop: -175, innerScroll: 0 },
-				1 : { marginTop: -25, innerScroll: 50 },
-				2 : { marginTop: 25, innerScroll: 0 }
+				0 : { top: -175, innerScroll: 0 },
+				1 : { top: -25, innerScroll: 50 },
+				2 : { top: 25, innerScroll: 0 }
 			},
 			
 			200 : {
-				0 : { marginTop: -200, innerScroll: 0 },
-				1 : { marginTop: -50, innerScroll: 50 },
-				2 : { marginTop: 0, innerScroll: 0 }
+				0 : { top: -200, innerScroll: 0 },
+				1 : { top: -50, innerScroll: 50 },
+				2 : { top: 0, innerScroll: 0 }
 			},
 			
 			225 : {
-				0 : { marginTop: -225, innerScroll: 0 },
-				1 : { marginTop: -75, innerScroll: 50 },
-				2 : { marginTop: 0, innerScroll: 25 }
+				0 : { top: -225, innerScroll: 0 },
+				1 : { top: -75, innerScroll: 50 },
+				2 : { top: 0, innerScroll: 25 }
 			},
 			
 			250 : {
-				0 : { marginTop: -250, innerScroll: 0 },
-				1 : { marginTop: -100, innerScroll: 50 },
-				2 : { marginTop: 0, innerScroll: 50 }
+				0 : { top: -250, innerScroll: 0 },
+				1 : { top: -100, innerScroll: 50 },
+				2 : { top: 0, innerScroll: 50 }
 			}
 		};
 		
@@ -264,17 +264,17 @@ describe( 'ArticleScrollManager', function() {
 				} );
 				
 				it( "should set the first article to the correct inner scroll and top margin", function() {
-					expect( articles[ 0 ].getMarginTop() ).toBe( expected[ scrollValue ][ 0 ].marginTop );
+					expect( articles[ 0 ].getTop() ).toBe( expected[ scrollValue ][ 0 ].top );
 					expect( articles[ 0 ].getScrollTop() ).toBe( expected[ scrollValue ][ 0 ].innerScroll );
 				} );
 				
 				it( "should set the second article to the correct inner scroll and top margin", function() {
-					expect( articles[ 1 ].getMarginTop() ).toBe( expected[ scrollValue ][ 1 ].marginTop );
+					expect( articles[ 1 ].getTop() ).toBe( expected[ scrollValue ][ 1 ].top );
 					expect( articles[ 1 ].getScrollTop() ).toBe( expected[ scrollValue ][ 1 ].innerScroll );
 				} );
 				
 				it( "should set the third article to the correct inner scroll and top margin", function() {
-					expect( articles[ 2 ].getMarginTop() ).toBe( expected[ scrollValue ][ 2 ].marginTop );
+					expect( articles[ 2 ].getTop() ).toBe( expected[ scrollValue ][ 2 ].top );
 					expect( articles[ 2 ].getScrollTop() ).toBe( expected[ scrollValue ][ 2 ].innerScroll );
 				} );
 			} );
