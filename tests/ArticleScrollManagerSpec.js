@@ -25,7 +25,7 @@ describe( 'ArticleScrollManager', function() {
 			articles[ i ] = JsMockito.mock( Article );
 			
 			JsMockito.when( articles[ i ] ).getHeight().thenReturn( 100 );
-			JsMockito.when( articles[ i ] ).getScrollHeight().thenReturn( 150 );
+			JsMockito.when( articles[ i ] ).getContentHeight().thenReturn( 150 );
 			JsMockito.when( articles[ i ] ).setTop().then( setTop );
 			JsMockito.when( articles[ i ] ).getTop().then( getTop );
 			JsMockito.when( articles[ i ] ).setScrollTop().then( setScrollTop );
@@ -42,7 +42,7 @@ describe( 'ArticleScrollManager', function() {
 		beforeEach( function() {
 			for( var i = 0, len = articles.length; i < len; i++ ) {
 				JsMockito.when( articles[ i ] ).getHeight().thenReturn( 100 );
-				JsMockito.when( articles[ i ] ).getScrollHeight().thenReturn( 150 );
+				JsMockito.when( articles[ i ] ).getContentHeight().thenReturn( 150 );
 			}
 		} );
 		
@@ -148,17 +148,17 @@ describe( 'ArticleScrollManager', function() {
 					articleScrollManager.setScrollTop( scrollValue );
 				} );
 				
-				it( "should set the first article to the correct inner scroll and top margin", function() {
+				it( "should set the first article to the correct inner scroll and CSS `top`", function() {
 					expect( articles[ 0 ].getTop() ).toBe( expected[ scrollValue ][ 0 ].top );
 					expect( articles[ 0 ].getScrollTop() ).toBe( expected[ scrollValue ][ 0 ].innerScroll );
 				} );
 				
-				it( "should set the second article to the correct inner scroll and top margin", function() {
+				it( "should set the second article to the correct inner scroll and CSS `top`", function() {
 					expect( articles[ 1 ].getTop() ).toBe( expected[ scrollValue ][ 1 ].top );
 					expect( articles[ 1 ].getScrollTop() ).toBe( expected[ scrollValue ][ 1 ].innerScroll );
 				} );
 				
-				it( "should set the third article to the correct inner scroll and top margin", function() {
+				it( "should set the third article to the correct inner scroll and CSS `top`", function() {
 					expect( articles[ 2 ].getTop() ).toBe( expected[ scrollValue ][ 2 ].top );
 					expect( articles[ 2 ].getScrollTop() ).toBe( expected[ scrollValue ][ 2 ].innerScroll );
 				} );
@@ -176,13 +176,13 @@ describe( 'ArticleScrollManager', function() {
 		
 		beforeEach( function() {
 			JsMockito.when( articles[ 0 ] ).getHeight().thenReturn( 100 );
-			JsMockito.when( articles[ 0 ] ).getScrollHeight().thenReturn( 50 );
+			JsMockito.when( articles[ 0 ] ).getContentHeight().thenReturn( 50 );
 			
 			JsMockito.when( articles[ 1 ] ).getHeight().thenReturn( 50 );
-			JsMockito.when( articles[ 1 ] ).getScrollHeight().thenReturn( 100 );
+			JsMockito.when( articles[ 1 ] ).getContentHeight().thenReturn( 100 );
 			
 			JsMockito.when( articles[ 2 ] ).getHeight().thenReturn( 100 );
-			JsMockito.when( articles[ 2 ] ).getScrollHeight().thenReturn( 150 );
+			JsMockito.when( articles[ 2 ] ).getContentHeight().thenReturn( 150 );
 		} );
 		
 		
@@ -263,17 +263,17 @@ describe( 'ArticleScrollManager', function() {
 					articleScrollManager.setScrollTop( scrollValue );
 				} );
 				
-				it( "should set the first article to the correct inner scroll and top margin", function() {
+				it( "should set the first article to the correct inner scroll and CSS `top`", function() {
 					expect( articles[ 0 ].getTop() ).toBe( expected[ scrollValue ][ 0 ].top );
 					expect( articles[ 0 ].getScrollTop() ).toBe( expected[ scrollValue ][ 0 ].innerScroll );
 				} );
 				
-				it( "should set the second article to the correct inner scroll and top margin", function() {
+				it( "should set the second article to the correct inner scroll and CSS `top`", function() {
 					expect( articles[ 1 ].getTop() ).toBe( expected[ scrollValue ][ 1 ].top );
 					expect( articles[ 1 ].getScrollTop() ).toBe( expected[ scrollValue ][ 1 ].innerScroll );
 				} );
 				
-				it( "should set the third article to the correct inner scroll and top margin", function() {
+				it( "should set the third article to the correct inner scroll and CSS `top`", function() {
 					expect( articles[ 2 ].getTop() ).toBe( expected[ scrollValue ][ 2 ].top );
 					expect( articles[ 2 ].getScrollTop() ).toBe( expected[ scrollValue ][ 2 ].innerScroll );
 				} );

@@ -23,4 +23,8 @@ jQuery( document ).ready( function() {
 	
 	scrollManager = new ArticleScrollManager( $containerEl, $scrollerEl, $scrollerHeightEl, articles );
 	scrollManager.setScrollTop( $scrollerEl.scrollTop() );
+	
+	// Show debugging output for certain things, after all initialization
+	DebugOutputWindow.setArticles( articles );
+	DebugOutputWindow.setScrollerHeight( $scrollerHeightEl.height() );
 } );
