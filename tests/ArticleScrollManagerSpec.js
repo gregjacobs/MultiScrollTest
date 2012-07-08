@@ -24,8 +24,6 @@ describe( 'ArticleScrollManager', function() {
 		for( var i = 0; i < 3; i++ ) {
 			articles[ i ] = JsMockito.mock( Article );
 			
-			JsMockito.when( articles[ i ] ).getHeight().thenReturn( 100 );
-			JsMockito.when( articles[ i ] ).getContentHeight().thenReturn( 150 );
 			JsMockito.when( articles[ i ] ).setTop().then( setTop );
 			JsMockito.when( articles[ i ] ).getTop().then( getTop );
 			JsMockito.when( articles[ i ] ).setScrollTop().then( setScrollTop );
@@ -41,8 +39,15 @@ describe( 'ArticleScrollManager', function() {
 		
 		beforeEach( function() {
 			for( var i = 0, len = articles.length; i < len; i++ ) {
-				JsMockito.when( articles[ i ] ).getHeight().thenReturn( 100 );
-				JsMockito.when( articles[ i ] ).getContentHeight().thenReturn( 150 );
+				var height = 100,
+				    contentContainerHeight = 100,  // Same as height in this case
+				    contentHeight = 150,  // Inner content's height
+				    scrollableHeight = Math.max( contentHeight - contentContainerHeight, 0 );
+				
+				JsMockito.when( articles[ i ] ).getHeight().thenReturn( height );
+				JsMockito.when( articles[ i ] ).getContentContainerHeight().thenReturn( contentContainerHeight );
+				JsMockito.when( articles[ i ] ).getContentHeight().thenReturn( contentHeight );
+				JsMockito.when( articles[ i ] ).getContentScrollableHeight().thenReturn( scrollableHeight );
 			}
 		} );
 		
@@ -92,50 +97,50 @@ describe( 'ArticleScrollManager', function() {
 			},
 			
 			175 : {
-				0 : { top: -125, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
 				1 : { top: 0, innerScroll: 25 },
 				2 : { top: 100, innerScroll: 0 }
 			},
 			
 			200 : {
-				0 : { top: -150, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
 				1 : { top: 0, innerScroll: 50 },
 				2 : { top: 100, innerScroll: 0 }
 			},
 			
 			225 : {
-				0 : { top: -175, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
 				1 : { top: -25, innerScroll: 50 },
 				2 : { top: 75, innerScroll: 0 }
 			},
 			
 			250 : {
-				0 : { top: -200, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
 				1 : { top: -50, innerScroll: 50 },
 				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			275 : {
-				0 : { top: -225, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
 				1 : { top: -75, innerScroll: 50 },
 				2 : { top: 25, innerScroll: 0 }
 			},
 			
 			300 : {
-				0 : { top: -250, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
 				1 : { top: -100, innerScroll: 50 },
 				2 : { top: 0, innerScroll: 0 }
 			},
 			
 			325 : {
-				0 : { top: -275, innerScroll: 50 },
-				1 : { top: -125, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
+				1 : { top: -100, innerScroll: 50 },
 				2 : { top: 0, innerScroll: 25 }
 			},
 			
 			350 : {
-				0 : { top: -300, innerScroll: 50 },
-				1 : { top: -150, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 50 },
+				1 : { top: -100, innerScroll: 50 },
 				2 : { top: 0, innerScroll: 50 }
 			}
 		};
@@ -176,13 +181,19 @@ describe( 'ArticleScrollManager', function() {
 		
 		beforeEach( function() {
 			JsMockito.when( articles[ 0 ] ).getHeight().thenReturn( 100 );
+			JsMockito.when( articles[ 0 ] ).getContentContainerHeight().thenReturn( 100 );
 			JsMockito.when( articles[ 0 ] ).getContentHeight().thenReturn( 50 );
+			JsMockito.when( articles[ 0 ] ).getContentScrollableHeight().thenReturn( Math.max( 50 - 100, 0 ) );
 			
 			JsMockito.when( articles[ 1 ] ).getHeight().thenReturn( 50 );
+			JsMockito.when( articles[ 1 ] ).getContentContainerHeight().thenReturn( 50 );
 			JsMockito.when( articles[ 1 ] ).getContentHeight().thenReturn( 100 );
+			JsMockito.when( articles[ 1 ] ).getContentScrollableHeight().thenReturn( Math.max( 100 - 50, 0 ) );
 			
 			JsMockito.when( articles[ 2 ] ).getHeight().thenReturn( 100 );
+			JsMockito.when( articles[ 2 ] ).getContentContainerHeight().thenReturn( 100 );
 			JsMockito.when( articles[ 2 ] ).getContentHeight().thenReturn( 150 );
+			JsMockito.when( articles[ 2 ] ).getContentScrollableHeight().thenReturn( Math.max( 150 - 100, 0 ) );
 		} );
 		
 		
@@ -219,38 +230,38 @@ describe( 'ArticleScrollManager', function() {
 			},
 			
 			125 : {
-				0 : { top: -125, innerScroll: 0 },
+				0 : { top: -100, innerScroll: 0 },
 				1 : { top: 0, innerScroll: 25 },
 				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			150 : {
-				0 : { top: -150, innerScroll: 0 },
+				0 : { top: -100, innerScroll: 0 },
 				1 : { top: 0, innerScroll: 50 },
 				2 : { top: 50, innerScroll: 0 }
 			},
 			
 			175 : {
-				0 : { top: -175, innerScroll: 0 },
+				0 : { top: -100, innerScroll: 0 },
 				1 : { top: -25, innerScroll: 50 },
 				2 : { top: 25, innerScroll: 0 }
 			},
 			
 			200 : {
-				0 : { top: -200, innerScroll: 0 },
+				0 : { top: -100, innerScroll: 0 },
 				1 : { top: -50, innerScroll: 50 },
 				2 : { top: 0, innerScroll: 0 }
 			},
 			
 			225 : {
-				0 : { top: -225, innerScroll: 0 },
-				1 : { top: -75, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 0 },
+				1 : { top: -50, innerScroll: 50 },
 				2 : { top: 0, innerScroll: 25 }
 			},
 			
 			250 : {
-				0 : { top: -250, innerScroll: 0 },
-				1 : { top: -100, innerScroll: 50 },
+				0 : { top: -100, innerScroll: 0 },
+				1 : { top: -50, innerScroll: 50 },
 				2 : { top: 0, innerScroll: 50 }
 			}
 		};

@@ -102,6 +102,20 @@ ArticleScrollManager.prototype = {
 	 * Sets the top scroll value that the ArticleScrollManager should scroll to. This is the method that performs the
 	 * actual routine of setting the "outer/inner" scroll on each of the {@link #articles}.
 	 * 
+	 * The calculations for any given article(n) are as follows:
+	 * 
+	 *                                        n-1          n-1
+	 *     innerScroll = max( min( scrollTop - Σ( |top| ) - Σ( innerScroll ), scrollableHeight ), 0 )
+	 *                n                       i=0     i    i=0            i                   n
+	 * 
+	 *                            n-1           n-1
+	 *     top = max( -scrollTop + Σ( height ) + Σ( innerScroll ) + innerScroll, -height )
+	 *        n                   i=0       i   i=0            i               n
+	 * 
+	 * The innerScroll of any Article is bound between 0 and the available scrollable height.
+	 * The CSS top value of any Article maxes out at its -height. So if it is 100px tall, its
+	 *   top value will only ever be set as high as -100px.  
+	 * 
 	 * @method setScrollTop
 	 * @param {Number} scrollTop
 	 */
@@ -109,41 +123,32 @@ ArticleScrollManager.prototype = {
 		scrollTop = Math.max( scrollTop, 0 );  // Don't let the scrollTop go negative (for Mac, which will allow you to scroll up past the top)
 		
 		var articles = this.articles,
-		    totalPreviousArticlesScrollHeight = 0,
-		    previousArticleHeight = 0,
-		    lastMarginTop = -scrollTop;
+		    totalPreviousArticlesTop = 0,
+		    totalPreviousArticlesInnerScroll = 0,
+		    totalPreviousArticlesHeight = 0,
+		    max = Math.max,
+		    min = Math.min;
 		
 		for( var i = 0, len = articles.length; i < len; i++ ) {
-			var articleHeight = articles[ i ].getHeight(),
-			    articleScrollHeight = articles[ i ].getContentHeight(),
-			    excessInnerScrollHeight = Math.max( articleScrollHeight - articleHeight, 0 ),   // Don't let this go negative
-			    innerScrollTop,
-			    top;
+			var currentArticle = articles[ i ],
+			    articleHeight = currentArticle.getHeight(),
+			    articleScrollableHeight = currentArticle.getContentScrollableHeight(),
+			    
+			    innerScroll = max( min( scrollTop - totalPreviousArticlesTop - totalPreviousArticlesInnerScroll, articleScrollableHeight ), 0 ),
+			    top = max( -scrollTop + totalPreviousArticlesHeight + totalPreviousArticlesInnerScroll + innerScroll, -articleHeight );
 			
-			// Set the inner Article scroll top value
-			if( scrollTop - totalPreviousArticlesScrollHeight < 0 ) {
-				innerScrollTop = 0;
-			} else if( scrollTop - totalPreviousArticlesScrollHeight > excessInnerScrollHeight ) {
-				innerScrollTop = excessInnerScrollHeight;
-			} else {
-				innerScrollTop = scrollTop - totalPreviousArticlesScrollHeight;
-			}
-			articles[ i ].setScrollTop( innerScrollTop );
+			currentArticle.setScrollTop( innerScroll );
+			currentArticle.setTop( top );
 			
-			
-			// Set the outer Article top value
-			top = previousArticleHeight + lastMarginTop + innerScrollTop;
-			articles[ i ].setTop( top );
+			// Add the current values to the "previous values" sum (for use in the formulas)
+			totalPreviousArticlesTop += Math.abs( top );
+			totalPreviousArticlesInnerScroll += innerScroll;
+			totalPreviousArticlesHeight += articleHeight;
 			
 			
 			// Debugging Output
-			DebugOutputWindow.setArticleScrollVal( i, innerScrollTop );
+			DebugOutputWindow.setArticleScrollVal( i, innerScroll );
 			DebugOutputWindow.setArticleMarginTopVal( i, top );
-			
-			totalPreviousArticlesScrollHeight += Math.max( articleHeight, articleScrollHeight );
-			
-			previousArticleHeight = articleHeight;
-			lastMarginTop = top;
 		}
 	}
 	
