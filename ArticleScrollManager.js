@@ -112,9 +112,10 @@ ArticleScrollManager.prototype = {
 	 *     top = max( -scrollTop + Σ( height ) + Σ( innerScroll ) + innerScroll, -height )
 	 *        n                   i=0       i   i=0            i               n
 	 * 
-	 * The innerScroll of any Article is bound between 0 and the available scrollable height.
+	 * The innerScroll of any Article is bound between 0 and the available scrollable height (which is what
+	 *   the max/min calls handle).
 	 * The CSS top value of any Article maxes out at its -height. So if it is 100px tall, its
-	 *   top value will only ever be set as high as -100px.  
+	 *   top value will only ever be set as high as -100px.
 	 * 
 	 * @method setScrollTop
 	 * @param {Number} scrollTop
