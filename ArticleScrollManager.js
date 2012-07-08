@@ -21,13 +21,7 @@ var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightE
 	// the outer/inner area of the articles and their content
 	this.$scrollerEl.on( 'scroll', jQuery.proxy( this.onScroll, this ) );
 	
-	
-	// Pass-through any mouse events on the scroller element overlay to the element under it. They will
-	// bubble up to the $containerEl, but really be fired on the $scrollerEl. However, when we hide the
-	// $scrollerEl, the $containerEl will still tell us when its mouseleave event happens
-	this.$containerEl.on( 'click dblclick mousedown mouseup mouseover mouseout contextmenu mouseenter mouseleave', 
-		jQuery.proxy( this.onScrollerMouseEvent, this ) );
-	
+	// Set the scroller element to start scrolling when the user mousewheels (done through the $containerEl)
 	this.$containerEl.on( 'mousewheel', jQuery.proxy( this.onMouseWheel, this ) );
 };
 
