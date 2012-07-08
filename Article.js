@@ -77,9 +77,13 @@ Article.prototype = {
 	 * {@link #$contentContainerEl content container}. 
 	 * 
 	 * This method returns how many pixels are actually scrollable inside the 
-	 * {@link #$contentContainerEl content container}. If the {@link #$contentEl content} 
-	 * is shorter than the {@link #$contentContainerEl content container}, then this method 
-	 * will return 0.
+	 * {@link #$contentContainerEl content container}. 
+	 * 
+	 * - If the {@link #$contentEl content} is taller than the {@link #$contentContainerEl content container},
+	 *   then the difference between the height of the content and the content container will be returned.
+	 *   Example: 150 content height with a 100 content container height will cause this method to return 50.
+	 * - If the {@link #$contentEl content} is shorter than the {@link #$contentContainerEl content container}, 
+	 *   then this method will return 0. 
 	 * 
 	 * @method getContentScrollableHeight
 	 * @return {Number}
