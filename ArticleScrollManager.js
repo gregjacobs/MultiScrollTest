@@ -1,4 +1,4 @@
-/*global window, jQuery, DebugOutputWindow */
+/*global window, jQuery, Utils, DebugOutputWindow */
 /*jslint plusplus:true, undef:false, vars:true */
 var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightEl, articles ) {
 	this.$containerEl = $containerEl;
@@ -23,6 +23,9 @@ var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightE
 	
 	// Set the scroller element to start scrolling when the user mousewheels (done through the $containerEl)
 	this.$containerEl.on( 'mousewheel', jQuery.proxy( this.onMouseWheel, this ) );
+	
+	// Handle mousemove to re-enable pointer events for the scrollbar on Firefox
+	this.$containerEl.on( 'mousemove', jQuery.proxy( this.onMouseMove, this ) );
 };
 
 
@@ -64,34 +67,76 @@ ArticleScrollManager.prototype = {
 			clearTimeout( this.pointerEventsResetTimer );
 		}
 		
-		
-		var uA = window.navigator.userAgent.toLowerCase(),
-		    isIE = /msie/.test( uA ) && !( /opera/.test( uA ) );
-		
-		
 		// On mouse wheel, give pointer events back to the scroller element
 		// so that it can scroll
-		this.$scrollerEl.css( 'pointer-events', 'auto' );
-		
-		if( isIE ) {
-			// Put in a 1x1 transparent gif for the background image. This makes IE capture pointer events on the element (notably the mousewheel
-			// event that we want!) while also leaving the scrollbar in place. If we used opacity:0, or filter:alpha(opacity=0) with an actual
-			// background, it would end up hiding the scrollbar.
-			this.$scrollerEl.css( 'background-image', 'url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)' );
-		}
+		this.enableScrollerPointerEvents();
 		
 		
 		// Set a timeout to then remove pointer events after a short time, so that the
 		// user can click through again.
 		this.pointerEventsResetTimer = setTimeout( jQuery.proxy( function() {
-			this.$scrollerEl.css( 'pointer-events', 'none' );
-			
-			if( isIE ) {
-				this.$scrollerEl.css( 'background-image', 'none' );  // Remove the transparent background image
-			}
+			this.disableScrollerPointerEvents();
 		}, this ), 150 );
 	},
 	
+	
+	/**
+	 * Handles a move to the mouse over the {@link #$containerEl}. When the mouse is over the right
+	 * side of the container, where the scrollbar is present, we re-enable pointer events so that
+	 * the user can actually touch the scrollbar. This is currently only an issue for Firefox.
+	 * 
+	 * @protected
+	 * @method onMouseMove
+	 * @param {jQuery.Event} evt
+	 */
+	onMouseMove : function( evt ) {
+		var scrollbarWidth = Utils.getScrollbarWidth(),
+		    containerElOffset = this.$containerEl.offset(),
+		    containerElWidth = this.$containerEl.width(),
+		    withinScrollbarArea = evt.pageX > ( containerElOffset.left + containerElWidth - scrollbarWidth );  // note: we don't have to check the right-side bound because the mouse events will stop if the mouse leaves the element
+		
+		if( withinScrollbarArea ) {
+			this.enableScrollerPointerEvents();
+		} else {
+			this.disableScrollerPointerEvents();
+		}
+	},
+	
+	
+	/**
+	 * Utility method to enable pointer-events on the {@link #$scrollerEl}.
+	 * 
+	 * @protected
+	 * @method enableScrollerPointerEvents
+	 */
+	enableScrollerPointerEvents : function() {
+		this.$scrollerEl.css( 'pointer-events', 'auto' );
+		
+		if( Utils.isIE ) {
+			// Put in a 1x1 transparent gif for the background image. This makes IE capture pointer events on the element (notably the mousewheel
+			// event that we want!) while also leaving the scrollbar in place. If we used opacity:0, or filter:alpha(opacity=0) with an actual
+			// background, it would end up hiding the scrollbar.
+			this.$scrollerEl.css( 'background-image', 'url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)' );
+		}
+	},
+	
+	
+	/**
+	 * Utility method to disable pointer-events on the {@link #$scrollerEl}.
+	 * 
+	 * @protected
+	 * @method disableScrollerPointerEvents
+	 */
+	disableScrollerPointerEvents : function() {
+		this.$scrollerEl.css( 'pointer-events', 'none' );
+		
+		if( Utils.isIE ) {
+			this.$scrollerEl.css( 'background-image', 'none' );  // Remove the transparent background image
+		}
+	},
+	
+	
+	// --------------------------------
 	
 	
 	/**
