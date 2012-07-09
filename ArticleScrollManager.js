@@ -24,7 +24,7 @@ var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightE
 	// Set the scroller element to start scrolling when the user mousewheels (done through the $containerEl)
 	this.$containerEl.on( 'mousewheel', jQuery.proxy( this.onMouseWheel, this ) );
 	
-	// Handle mousemove to re-enable pointer events for the scrollbar on Firefox
+	// Handle mousemove to re-enable pointer events for when the mouse is on top of the scrollbar for Firefox
 	this.$containerEl.on( 'mousemove', jQuery.proxy( this.onMouseMove, this ) );
 };
 
