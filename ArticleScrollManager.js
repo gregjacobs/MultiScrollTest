@@ -48,6 +48,13 @@ ArticleScrollManager.prototype = {
 	 * perform the correct "outer/inner" multiscroll of each (handled by {@link #setScrollTop}.
 	 */
 	
+	/**
+	 * @protected
+	 * @property {Boolean} isMouseWheeling
+	 * 
+	 * True if the user is currently mouse-wheeling. We'll disable the mousemove handler if they are.
+	 */
+	
 	
 	
 	/**
@@ -70,12 +77,13 @@ ArticleScrollManager.prototype = {
 		// On mouse wheel, give pointer events back to the scroller element
 		// so that it can scroll
 		this.enableScrollerPointerEvents();
-		
+		this.isMouseWheeling = true;
 		
 		// Set a timeout to then remove pointer events after a short time, so that the
 		// user can click through again.
 		this.pointerEventsResetTimer = setTimeout( jQuery.proxy( function() {
 			this.disableScrollerPointerEvents();
+			this.isMouseWheeling = false;
 		}, this ), 150 );
 	},
 	
@@ -90,15 +98,20 @@ ArticleScrollManager.prototype = {
 	 * @param {jQuery.Event} evt
 	 */
 	onMouseMove : function( evt ) {
-		var scrollbarWidth = Utils.getScrollbarWidth(),
-		    containerElOffset = this.$containerEl.offset(),
-		    containerElWidth = this.$containerEl.width(),
-		    withinScrollbarArea = evt.pageX > ( containerElOffset.left + containerElWidth - scrollbarWidth );  // note: we don't have to check the right-side bound because the mouse events will stop if the mouse leaves the element
-		
-		if( withinScrollbarArea ) {
-			this.enableScrollerPointerEvents();
-		} else {
-			this.disableScrollerPointerEvents();
+		// Only perform these calculations and enable/disable the scroller pointer events if the user is not wheeling the mouse. 
+		// This fixes an issue where while mousewheeling, we'd disable the scroller's pointer events momentarily, and the whole 
+		// outer document would scroll instead of just the area managed by the ArticleScrollManager.
+		if( !this.isMouseWheeling ) {
+			var scrollbarWidth = Utils.getScrollbarWidth(),
+			    containerElOffset = this.$containerEl.offset(),
+			    containerElWidth = this.$containerEl.width(),
+			    withinScrollbarArea = evt.pageX > ( containerElOffset.left + containerElWidth - scrollbarWidth );  // note: we don't have to check the right-side bound because the mouse events will stop if the mouse leaves the element
+			
+			if( withinScrollbarArea ) {
+				this.enableScrollerPointerEvents();
+			} else {
+				this.disableScrollerPointerEvents();
+			}
 		}
 	},
 	
