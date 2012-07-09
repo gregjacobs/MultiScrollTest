@@ -32,14 +32,7 @@
 				overflow-y: scroll;
 				z-index: 9000;
 				
-				pointer-events: none;
-				
-				/* for IE */
-				/*
-				 background-color: white;  
-				    -- This will be set to 'white' in the JS code when we want pointer events on it (i.e. for mousewheel), 
-				       and cleared when we don't */
-				opacity: 0;  /* so we don't see the background color in IE */
+				pointer-events: none; /* note: a workaround for IE is done in the JS code on mousewheel */
 			}
 			
 			#scrollerHeightEl {

@@ -64,16 +64,31 @@ ArticleScrollManager.prototype = {
 			clearTimeout( this.pointerEventsResetTimer );
 		}
 		
+		
+		var uA = window.navigator.userAgent.toLowerCase(),
+		    isIE = /msie/.test( uA ) && !( /opera/.test( uA ) );
+		
+		
 		// On mouse wheel, give pointer events back to the scroller element
 		// so that it can scroll
 		this.$scrollerEl.css( 'pointer-events', 'auto' );
-		this.$scrollerEl.css( 'background-color', 'white' );  // for IE
+		
+		if( isIE ) {
+			// Put in a 1x1 transparent gif for the background image. This makes IE capture pointer events on the element (notably the mousewheel
+			// event that we want!) while also leaving the scrollbar in place. If we used opacity:0, or filter:alpha(opacity=0) with an actual
+			// background, it would end up hiding the scrollbar.
+			this.$scrollerEl.css( 'background-image', 'url(data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==)' );
+		}
+		
 		
 		// Set a timeout to then remove pointer events after a short time, so that the
 		// user can click through again.
 		this.pointerEventsResetTimer = setTimeout( jQuery.proxy( function() {
 			this.$scrollerEl.css( 'pointer-events', 'none' );
-			this.$scrollerEl.css( 'background-color', '' );  // for IE
+			
+			if( isIE ) {
+				this.$scrollerEl.css( 'background-image', 'none' );  // Remove the transparent background image
+			}
 		}, this ), 150 );
 	},
 	
