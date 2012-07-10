@@ -1,5 +1,5 @@
 /*global window, jQuery, Article, ArticleScrollManager, DebugOutputWindow */
-jQuery( document ).ready( function() {
+jQuery( window ).load( function() {   // something weird going on with ready() event when loaded in new window... using load event
 	
 	DebugOutputWindow.init();
 	
