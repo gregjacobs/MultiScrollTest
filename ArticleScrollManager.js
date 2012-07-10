@@ -1,5 +1,4 @@
 /*global window, jQuery, Utils, DebugOutputWindow */
-/*jslint plusplus:true, undef:false, vars:true */
 var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightEl, articles ) {
 	this.$containerEl = $containerEl;
 	this.$scrollerEl = $scrollerEl;
@@ -26,6 +25,10 @@ var ArticleScrollManager = function( $containerEl, $scrollerEl, $scrollerHeightE
 	
 	// Handle mousemove to re-enable pointer events for when the mouse is on top of the scrollbar for Firefox
 	this.$containerEl.on( 'mousemove', jQuery.proxy( this.onMouseMove, this ) );
+	
+	
+	// Finally, respond to window resizes, to fix everything up
+	jQuery( window ).on( 'resize', jQuery.proxy( this.onWindowResize, this ) );
 };
 
 
@@ -55,6 +58,22 @@ ArticleScrollManager.prototype = {
 	 * True if the user is currently mouse-wheeling. We'll disable the mousemove handler if they are.
 	 */
 	
+	
+	/**
+	 * Handles a window resize by fixing the size of all of the Articles, and then resetting the scroll top
+	 * to set up the new outer/inner scroll positions.
+	 * 
+	 * @protected
+	 * @method onWindowResize
+	 */
+	onWindowResize : function() {
+		var articles = this.articles;
+		for( var i = 0, len = articles.length; i < len; i++ ) {
+			articles[ i ].resize();
+		}
+		
+		this.setScrollTop( this.$scrollerEl.scrollTop() );
+	},
 	
 	
 	/**

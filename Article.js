@@ -1,9 +1,12 @@
 /*global window, jQuery */
-var Article = function( el ) {
+var Article = function( el, containerEl ) {
 	this.$el = jQuery( el );
+	this.$containerEl = jQuery( containerEl );
 
 	this.$contentContainerEl = this.$el.find( '*[data-elem="contentContainer"]' );
 	this.$contentEl = this.$contentContainerEl.find( '*[data-elem="content"]' );
+	
+	this.resize();
 };
 
 Article.prototype = {
@@ -15,6 +18,14 @@ Article.prototype = {
 	 * @property {jQuery} $el
 	 * 
 	 * The Article's element itself. 
+	 */
+
+	/**
+	 * @protected
+	 * @property {jQuery} $containerEl
+	 *
+	 * The element that holds the {@link #$el} so that we can size the {@link #$el} off of it. This is passed
+	 * into the constructor.
 	 */
 	
 	/**
@@ -35,6 +46,21 @@ Article.prototype = {
 	
 	
 	// ------------------------------
+	
+	
+	/**
+	 * Resizes the Article to the dimensions of its parent element.
+	 * 
+	 * @method resize 
+	 */
+	resize : function() {
+		var $containerEl = this.$containerEl;
+		this.$el.css( {
+			width : $containerEl.width() + 'px',
+			height : $containerEl.height() + 'px'
+		} );
+	},
+	
 	
 	
 	/**
